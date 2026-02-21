@@ -53,6 +53,20 @@
     }
     .copy-btn:hover { color: #aaa; border-color: #555; }
     .copy-btn.copied { color: #7a9e7a; border-color: #7a9e7a; }
+    .random-link {
+      display: inline-block;
+      margin-top: 1rem;
+      background: none;
+      border: none;
+      color: #555;
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .random-link:hover { color: #999; }
     @media (min-width: 600px) {
       blockquote { font-size: 1.75rem; }
     }
@@ -64,6 +78,8 @@
     <blockquote id="quote"></blockquote>
     <p class="author" id="author"></p>
     <button class="copy-btn" id="copyBtn">Copy quote</button>
+    <br>
+    <button class="random-link" id="randomBtn">Show another</button>
   </div>
   <script>
     const quotes = [
@@ -103,13 +119,21 @@
 
     const today = new Date();
     const dayIndex = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
-    const quote = quotes[dayIndex % quotes.length];
+    let current = quotes[dayIndex % quotes.length];
 
-    document.getElementById('quote').textContent = quote.text;
-    document.getElementById('author').textContent = quote.author;
+    const quoteEl = document.getElementById('quote');
+    const authorEl = document.getElementById('author');
+
+    function showQuote(q) {
+      current = q;
+      quoteEl.textContent = q.text;
+      authorEl.textContent = q.author;
+    }
+
+    showQuote(current);
 
     document.getElementById('copyBtn').addEventListener('click', async function() {
-      const text = `"${quote.text}" — ${quote.author}`;
+      const text = `"${current.text}" — ${current.author}`;
       await navigator.clipboard.writeText(text);
       this.textContent = 'Copied!';
       this.classList.add('copied');
@@ -117,6 +141,13 @@
         this.textContent = 'Copy quote';
         this.classList.remove('copied');
       }, 2000);
+    });
+
+    document.getElementById('randomBtn').addEventListener('click', function() {
+      let idx;
+      do { idx = Math.floor(Math.random() * quotes.length); }
+      while (quotes[idx] === current && quotes.length > 1);
+      showQuote(quotes[idx]);
     });
   </script>
 </body>
