@@ -39,6 +39,20 @@
       font-style: normal;
     }
     .author::before { content: '— '; }
+    .copy-btn {
+      margin-top: 2rem;
+      background: none;
+      border: 1px solid #333;
+      color: #666;
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .copy-btn:hover { color: #aaa; border-color: #555; }
+    .copy-btn.copied { color: #7a9e7a; border-color: #7a9e7a; }
     @media (min-width: 600px) {
       blockquote { font-size: 1.75rem; }
     }
@@ -49,6 +63,7 @@
     <p class="label">Stoic Quote of the Day</p>
     <blockquote id="quote"></blockquote>
     <p class="author" id="author"></p>
+    <button class="copy-btn" id="copyBtn">Copy quote</button>
   </div>
   <script>
     const quotes = [
@@ -92,6 +107,17 @@
 
     document.getElementById('quote').textContent = quote.text;
     document.getElementById('author').textContent = quote.author;
+
+    document.getElementById('copyBtn').addEventListener('click', async function() {
+      const text = `"${quote.text}" — ${quote.author}`;
+      await navigator.clipboard.writeText(text);
+      this.textContent = 'Copied!';
+      this.classList.add('copied');
+      setTimeout(() => {
+        this.textContent = 'Copy quote';
+        this.classList.remove('copied');
+      }, 2000);
+    });
   </script>
 </body>
 </html>
