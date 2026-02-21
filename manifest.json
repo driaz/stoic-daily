@@ -1,0 +1,17 @@
+{
+  "name": "Stoic Daily",
+  "short_name": "Stoic Daily",
+  "description": "A Stoic quote for every day",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
